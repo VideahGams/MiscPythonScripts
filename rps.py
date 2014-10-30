@@ -5,7 +5,7 @@ import random
 
 isRunning = True
 
-moves = ["rock", "paper", "scissors"]
+moves = ["rock", "paper", "scores", "scissors"]
 
 commands = ["? or help", "quit"]
 
