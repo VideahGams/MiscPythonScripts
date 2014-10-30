@@ -59,9 +59,7 @@ def executeGame(inputedmove):
 		cpuScore += 1
 
 	printScores()
-
-	print(cpuChoice)
-
+	
 
 while isRunning == True:
 
