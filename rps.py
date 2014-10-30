@@ -5,9 +5,9 @@ import random
 
 isRunning = True
 
-moves = ["rock", "paper", "scores", "scissors"]
+moves = ["rock", "paper", "scissors"]
 
-commands = ["? or help", "quit"]
+commands = ["? or help", "scores", "quit"]
 
 playerScore = 0
 cpuScore = 0
