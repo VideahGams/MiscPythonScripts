@@ -6,6 +6,8 @@ from optparse import OptionParser
 from getpass import getuser
 from time import ctime, sleep
 
+labels = ['OS', "User", "Hostname", "Kernel", "Uptime", "WM", "Shell", "Terminal", "Packages", "CPU", "RAM", "Disk"]
+
 class tcolors:
 
 	for arg in sys.argv:
@@ -34,8 +36,8 @@ class tcolors:
 			'\x1b[0m' # Clear
 			]
 		else:
-			table = [None] * 30
-			for x in range(0, 30):
+			table = [None] * len(labels)
+			for x in range(0, len(labels)):
 				table[x] = '\x1b[0m' # Clear
 
 
@@ -92,15 +94,20 @@ def cpu():
 	return re.sub('  +', ' ', file[4].replace('model name\t: ', '').rstrip('\n'))
 
 def ram():
-	return "TODO"
+	raminfo = Popen(['free', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+	ram = ''.join(filter(re.compile('M').search, raminfo)).split()
+	#ramvalue = round(int(ram[1]) / 1024) # Convert Mb to Gb
+	return str(ram[1]) + "MB"
 
 def disk():
-	return "TODO"
+	p1 = Popen(['df', '-Tlh', '--total', '-t', 'ext4', '-t', 'ext3', '-t', 'ext2', '-t', 'reiserfs', '-t', 'jfs', '-t', 'ntfs', '-t', 'fat32', '-t', 'btrfs', '-t', 'fuseblk', '-t', 'xfs'], stdout=PIPE).communicate()[0].decode("Utf-8")
+	total = p1.splitlines()[-1]
+	used = total.split()[3]
+	size = total.split()[2]
+	usedpercent = float(total.split()[5][:-1])
+	return str(used) + "/" + str(size)
 
-labels = ['OS', "User", "Hostname", "Kernel", "Uptime", "WM", "Shell", "Terminal", "Packages", "CPU", "RAM", "Disk"]
 info = [distro(), user(), hostname(), kernel(), uptime(), wm(), shell(), terminal(), packages(), cpu(), ram(), disk()]
 
 for x in range(0, len(labels)):
 	display(labels[x], info[x], tcolors.table[x])
-
-#display(, tcolors.GREEN
